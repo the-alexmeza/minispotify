@@ -29,9 +29,20 @@ environ.Env.read_env()
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
 
+LOGIN_REDIRECT_URL = 'search:search'
+LOGOUT_REDIRECT_URL = 'search:search'
+
 # Spotify Keys
 SOCIAL_AUTH_SPOTIFY_KEY = env("SPOTIFY_CLIENT")
 SOCIAL_AUTH_SPOTIFY_SECRET = env("SPOTIFY_SECRET")
+SOCIAL_AUTH_SPOTIFY_SCOPE = [
+    'user-read-playback-state',
+    'user-modify-playback-state',
+    'user-read-currently-playing',
+    'streaming',
+    "user-read-email",
+    "user-read-private",
+]
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
@@ -45,8 +56,10 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
-SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
+
+AUTHENTICATION_BACKENDS = (
     'social_core.backends.spotify.SpotifyOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -86,7 +99,7 @@ ROOT_URLCONF = 'spotifybrowser.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block body %}
+  <div class="container">
+    {% if user.is_authenticated %}
+      <h1>User Info:</h1>
+      <p>{{ extra.current_user }}</p>
+      <h1>Song Info:</h1>
+      <p>{{ extra.current_song }}</p>
+      <a id="pause" href="#">Pause Playback</a>
+      <a id="play" href="#">Play Playback</a>
+
+      <script src="https://sdk.scdn.co/spotify-player.js"></script>
+      <script>
+        window.onSpotifyWebPlaybackSDKReady = () => {
+          const token = '{{ extra.access_token }}';
+          const player = new Spotify.Player({
+            name: 'MiniSpot',
+            getOAuthToken: cb => { cb(token); }
+          });
+
+          // Error handling
+          player.addListener('initialization_error', ({ message }) => { console.error(message); });
+          player.addListener('authentication_error', ({ message }) => { console.error(message); });
+          player.addListener('account_error', ({ message }) => { console.error(message); });
+          player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+          // Playback status updates
+          player.addListener('player_state_changed', state => { console.log(state); });
+
+          // Ready
+          player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+          });
+
+          // Not Ready
+          player.addListener('not_ready', ({ device_id }) => {
+            console.log('Device ID has gone offline', device_id);
+          });
+
+          // Connect to the player!
+          player.connect();
+
+          $("#pause").on("click", function(e) {
+            e.preventDefault();
+            player.pause().then(() => {
+              console.log('Playback paused');
+            });
+          });
+          $("#play").on("click", function(e) {
+            e.preventDefault();
+            player.resume().then(() => {
+              console.log('Playback resumed');
+            });
+          });
+        };
+      </script>
+    {% else %}
+      <h1>Hello World</h1>
+    {% endif %}
+  </div>
+{% endblock %}

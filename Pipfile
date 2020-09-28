@@ -17,6 +17,7 @@ django-heroku = "*"
 gunicorn = "*"
 django-environ = "*"
 social-auth-app-django = "*"
+spotipy = "*"
 
 [dev-packages]
 
