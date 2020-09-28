@@ -3,10 +3,8 @@
 {% block body %}
   <div class="container">
     {% if user.is_authenticated %}
-      <h1>User Info:</h1>
-      <p>{{ extra.current_user }}</p>
-      <h1>Song Info:</h1>
-      <p>{{ extra.current_song }}</p>
+      <h1>Hi {{ extra.current_user.display_name }},</h1>
+      <h1> Current song: <span id="song_name">No Song Playing</span></h1>
       <a id="pause" href="#">Pause Playback</a>
       <a id="play" href="#">Play Playback</a>
 
@@ -26,7 +24,14 @@
           player.addListener('playback_error', ({ message }) => { console.error(message); });
 
           // Playback status updates
-          player.addListener('player_state_changed', state => { console.log(state); });
+          player.addListener('player_state_changed', state => {
+            console.log(state);
+            if (!state) {
+                return;
+            }
+            let {current_track, next_tracks: [next_track]} = state.track_window;
+            $("#song_name").text(current_track.name + " by " + current_track.artists[0].name);
+          });
 
           // Ready
           player.addListener('ready', ({ device_id }) => {
@@ -44,13 +49,13 @@
           $("#pause").on("click", function(e) {
             e.preventDefault();
             player.pause().then(() => {
-              console.log('Playback paused');
+              player.getCurrentState().then(state => { console.log(state); });
             });
           });
           $("#play").on("click", function(e) {
             e.preventDefault();
             player.resume().then(() => {
-              console.log('Playback resumed');
+              player.getCurrentState().then(state => { console.log(state); });
             });
           });
         };
