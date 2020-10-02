@@ -1,0 +1,68 @@
+body {
+  padding-bottom: 1000px;
+}
+
+.player-wrapper {
+  height:100%;
+  width:100%;
+}
+
+.player-background {
+  background-color: #202124;
+  padding: 72px 33px 66px 33px;
+  border-radius: 50px;
+  width: 375px;
+  height: 812px;
+  padding-top: 72px;
+  position: relative;
+  white-space: nowrap;
+}
+
+.fixed-centered {
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.player-navbar {
+  height: 72px;
+  width: 100%;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  background: #212121;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.50);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.player-song {
+  font-family: "Lato";
+  font-weight: bold;
+  font-size: 48px;
+  color: #FAFAFA;
+  letter-spacing: 0;
+  padding-top: 30px;
+  padding-bottom:14px;
+  overflow-x: scroll;
+}
+
+.player-artist {
+  font-family: "Lato";
+  font-size: 18px;
+  color: #FAFAFA;
+  letter-spacing: 0;
+  overflow-x: scroll;
+}
+
+.player-art {
+  padding-top: 68px;
+}
+
+.player-buttons {
+  padding-top: 87px;
+}
+
+.row {
+  margin: 0;
+  padding: 0;
+}

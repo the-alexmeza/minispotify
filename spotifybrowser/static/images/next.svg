@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="68px" height="77px" viewBox="0 0 68 77" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
+    <title>skip-forward</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Screen" transform="translate(-233.000000, -670.000000)">
+            <rect id="Rectangle" fill="#202124" x="0" y="0" width="375" height="812"></rect>
+            <g id="skip-forward" transform="translate(234.000000, 671.000000)" fill="#FAFAFA" stroke="#FAFAFA" stroke-linecap="round" stroke-linejoin="round">
+                <polygon id="Path" points="0 0 46.875 37.5 0 75"></polygon>
+                <line x1="65.625" y1="4.6875" x2="65.625" y2="70.3125" id="Path"></line>
+            </g>
+        </g>
+    </g>
+</svg>

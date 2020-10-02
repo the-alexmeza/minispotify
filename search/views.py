@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.conf import settings
+from django.contrib.auth import logout;
 import spotipy
 import json
 
@@ -16,3 +17,8 @@ def search(request):
         extra["current_user"] = current_user
         extra["access_token"] = spotify_user.extra_data["access_token"]
     return render(request, 'login/login.html', {'extra': extra})
+
+
+def reval(request):
+    logout(request)
+    return redirect("search:search")

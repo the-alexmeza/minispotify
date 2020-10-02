@@ -1,13 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Login{% endblock %}
 {% block body %}
   <div class="container">
     {% if user.is_authenticated %}
-      <h1>Hi {{ extra.current_user.display_name }},</h1>
-      <h1> Current song: <span id="song_name">No Song Playing</span></h1>
-      <a id="pause" href="#">Pause Playback</a>
-      <a id="play" href="#">Play Playback</a>
-
       <script src="https://sdk.scdn.co/spotify-player.js"></script>
       <script>
         window.onSpotifyWebPlaybackSDKReady = () => {
@@ -30,7 +26,12 @@
                 return;
             }
             let {current_track, next_tracks: [next_track]} = state.track_window;
-            $("#song_name").text(current_track.name + " by " + current_track.artists[0].name);
+            $("#song-name").text(current_track.name);
+            $("#song-artist").text(current_track.artists[0].name);
+            $("#song-picture").attr("src", current_track.album.images[0].url);
+
+            // If paused is false: show pause.svg
+            // else show play.svg
           });
 
           // Ready
@@ -60,6 +61,38 @@
           });
         };
       </script>
+      <div class="player-wrapper">
+        <div class="player-background container">
+          <div class="player-navbar">
+            <!-- <a href="#">Back</a>
+            <a href="#">Profile</a> -->
+          </div>
+          <div class="player-song">
+            <span id="song-name">Nothing Playing</span>
+          </div>
+          <div class="player-artist">
+            <span id="song-artist">N/A</span>
+          </div>
+          <div class="player-art">
+            <center>
+              <img src="{% static 'images/placeholder_record.svg' %}" id="song-picture" class="rounded-circle">
+            </center>
+          </div>
+          <div class="player-buttons">
+            <div class="row">
+              <div class="col-6">
+                <center>
+                  <img src="{% static 'images/play.svg' %}">
+                </center>
+              </div>
+              <div class="col-6">
+                <center>
+                  <img src="{% static 'images/next.svg' %}">
+                </center>
+              </div>
+          </div>
+        </div>
+      </div>
     {% else %}
       <h1>Hello World</h1>
     {% endif %}
