@@ -29,19 +29,19 @@
       if (!state) {
           return;
       } else {
-        bar.set(state.position/state.duration);
+        bar.set(state.position/(state.duration-7200));
       }
 
       if (state.paused) {
         $("#song-picture").addClass("paused");
-        bar.set(state.position/state.duration);
+        bar.set(state.position/(state.duration-7200));
         bar.stop();
         $("#play-pause").attr("src", "{% static 'images/play.svg' %}");
       }
       else {
         $("#song-picture").removeClass("paused");
         bar.animate(1, {
-          duration: state.duration,
+          duration: state.duration-7200,
         });
         $("#play-pause").attr("src", "{% static 'images/pause.svg' %}");
       }
