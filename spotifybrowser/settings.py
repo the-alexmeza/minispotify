@@ -42,6 +42,8 @@ SOCIAL_AUTH_SPOTIFY_SCOPE = [
     'streaming',
     "user-read-email",
     "user-read-private",
+    "user-read-playback-position",
+    "user-read-recently-played",
 ]
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 SOCIAL_AUTH_PIPELINE = (

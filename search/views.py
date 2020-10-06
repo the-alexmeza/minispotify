@@ -11,11 +11,18 @@ def search(request):
     extra = {}
     if request.user.is_authenticated:
         spotify_user = request.user.social_auth.get(provider='spotify')
-        sp = spotipy.Spotify(auth=spotify_user.extra_data["access_token"])
-        current_user = sp.current_user()
-        extra = {}
+        current_user = None
+        try:
+            sp = spotipy.Spotify(auth=spotify_user.extra_data["access_token"])
+            current_user = sp.current_user()
+        except:
+            return redirect("search:reval")
+
+        last_played = sp.current_user_recently_played(limit=1)["items"][0]["track"]["uri"]
+        extra["last_played"] = last_played
         extra["current_user"] = current_user
         extra["access_token"] = spotify_user.extra_data["access_token"]
+
     return render(request, 'login/login.html', {'extra': extra})
 
 

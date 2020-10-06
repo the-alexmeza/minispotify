@@ -1,0 +1,120 @@
+{% load static %}
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
+<script>
+
+  window.onSpotifyWebPlaybackSDKReady = () => {
+    const token = '{{ extra.access_token }}';
+    const player = new Spotify.Player({
+      name: 'MiniSpot',
+      getOAuthToken: cb => { cb(token); },
+      spotify_uri: '{{ extra.last_played }}',
+    });
+
+    // Progress bar
+    var bar = new ProgressBar.Circle('#seekBar', {
+      color: '#1DD760',
+      strokeWidth: 3,
+      trailWidth: 0,
+    });
+
+    // Error handling
+    player.addListener('initialization_error', ({ message }) => { console.error(message); });
+    player.addListener('authentication_error', ({ message }) => { console.error(message); });
+    player.addListener('account_error', ({ message }) => { console.error(message); });
+    player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+    // Playback status updates
+    player.addListener('player_state_changed', state => {
+      console.log(state);
+      if (!state) {
+          return;
+      } else {
+        bar.set(state.position/state.duration);
+      }
+
+      if (state.paused) {
+        $("#song-picture").addClass("paused");
+        bar.set(state.position/state.duration);
+        bar.stop();
+        $("#play-pause").attr("src", "{% static 'images/play.svg' %}");
+      }
+      else {
+        $("#song-picture").removeClass("paused");
+        bar.animate(1, {
+          duration: state.duration,
+        });
+        $("#play-pause").attr("src", "{% static 'images/pause.svg' %}");
+      }
+
+      let {current_track, next_tracks: [next_track]} = state.track_window;
+      $("#song-name").text(current_track.name);
+      $("#song-artist").text(current_track.artists[0].name);
+      $("#song-picture").attr("src", current_track.album.images[0].url);
+
+      // If paused is false: show pause.svg
+      // else show play.svg
+    });
+
+    // Ready
+    player.addListener('ready', ({ device_id }) => {
+      console.log('Ready with Device ID', device_id);
+    });
+
+    // Not Ready
+    player.addListener('not_ready', ({ device_id }) => {
+      console.log('Device ID has gone offline', device_id);
+    });
+
+    // Connect to the player!
+    player.connect();
+
+    $("#play-pause").on("click", function(e) {
+      e.preventDefault();
+      player.togglePlay().then(() => {
+        player.getCurrentState().then(state => { console.log(state); });
+      });
+    });
+
+    $("#next-track").on("click", function(e) {
+      e.preventDefault();
+      player.nextTrack().then(() => {
+        console.log('Skipped to next track!');
+      })
+    })
+  };
+
+
+</script>
+<div class="player-wrapper">
+  <div class="player-background container">
+    <div class="player-navbar">
+      <!-- <a href="#">Back</a>
+      <a href="#">Profile</a> -->
+    </div>
+    <div class="player-song">
+      <span id="song-name">Nothing Playing</span>
+    </div>
+    <div class="player-artist">
+      <span id="song-artist">N/A</span>
+    </div>
+    <div class="player-art">
+      <center>
+        <div id="seekBar" class="seekBar"></div>
+        <img src="{% static 'images/placeholder_record.svg' %}" id="song-picture" class="rounded-circle rotate-img paused">
+      </center>
+    </div>
+    <div class="player-buttons">
+      <div class="row">
+        <div class="col-6">
+          <center>
+            <a href="#" id="play-pause-wrapper"><img src="{% static 'images/play.svg' %}" id="play-pause"></a>
+          </center>
+        </div>
+        <div class="col-6">
+          <center>
+            <a href="#" id="next-wrapper"><img src="{% static 'images/next.svg' %}" id="next-track"></a>
+          </center>
+        </div>
+    </div>
+  </div>
+</div>

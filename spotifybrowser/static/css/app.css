@@ -2,6 +2,13 @@ body {
   padding-bottom: 1000px;
 }
 
+.seekBar {
+  position:absolute;
+  left: 27px;
+  right: 27px;
+  top: 272px;
+}
+
 .player-wrapper {
   height:100%;
   width:100%;
@@ -65,4 +72,21 @@ body {
 .row {
   margin: 0;
   padding: 0;
+}
+
+.rotate-img {
+  animation: rotation 20s infinite linear;
+}
+
+.paused {
+  animation-play-state: paused;
+  -webkit-animation-play-state: paused;
+}
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }
